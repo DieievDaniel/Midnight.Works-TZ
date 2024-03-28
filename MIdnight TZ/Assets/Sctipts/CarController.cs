@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class CarController : MonoBehaviour
 {
     private Rigidbody playerRB;
@@ -26,6 +25,7 @@ public class CarController : MonoBehaviour
         playerRB = GetComponent<Rigidbody>();
         InstantiateSmoke();
     }
+
     private void FixedUpdate()
     {
         speed = playerRB.velocity.magnitude;
@@ -39,22 +39,39 @@ public class CarController : MonoBehaviour
 
     private void ApplyMotor()
     {
-        colliders.rearRightCollider.motorTorque = -motorPower * gasInput;
-        colliders.rearLeftCollider.motorTorque = -motorPower * gasInput;
+        float baseMotorPower = -motorPower * gasInput;
+
+        float driftAngle = Mathf.Abs(Vector3.SignedAngle(transform.forward, playerRB.velocity, Vector3.up));
+
+        float rearMotorPower = baseMotorPower * Mathf.Clamp01(1f - (driftAngle / 360f));
+
+        colliders.rearRightCollider.motorTorque = rearMotorPower;
+        colliders.rearLeftCollider.motorTorque = rearMotorPower;
+
+        colliders.frontRightCollider.motorTorque = baseMotorPower;
+        colliders.frontLeftCollider.motorTorque = baseMotorPower;
     }
+
     private void ApplySteering()
     {
         float steeringAngle = steeringInput * steeringCurve.Evaluate(speed);
-        if (slipAngle < 60f)
+
+        float driftAngle = Mathf.Abs(Vector3.SignedAngle(transform.forward, playerRB.velocity, Vector3.up));
+
+        if (driftAngle > 60f)
         {
-            steeringAngle += Vector3.SignedAngle(transform.forward, playerRB.velocity + transform.forward, Vector3.up);
+            float autoSteering = Mathf.Sign(Vector3.SignedAngle(transform.forward, playerRB.velocity, Vector3.up));
+
+            steeringAngle += autoSteering * Mathf.Clamp01((driftAngle - 60f) / 180f);
+
+            steeringAngle = Mathf.Clamp(steeringAngle, -90f, 90f);
         }
-        steeringAngle = Mathf.Clamp(steeringAngle, -90f, 90f);
+
         colliders.frontRightCollider.steerAngle = steeringAngle;
         colliders.frontLeftCollider.steerAngle = steeringAngle;
-
     }
-   private void InstantiateSmoke()
+
+    private void InstantiateSmoke()
     {
         wheelParticles.frontRightCollider = Instantiate(smokePrefab, colliders.frontRightCollider.transform.position - Vector3.up * colliders.frontRightCollider.radius, Quaternion.identity, colliders.frontRightCollider.transform)
             .GetComponent<ParticleSystem>();
@@ -88,12 +105,12 @@ public class CarController : MonoBehaviour
             brakeInput = 0;
         }
     }
-    void CheckParticles()
+
+    private void CheckParticles()
     {
         WheelHit[] wheelHits = new WheelHit[4];
         colliders.frontRightCollider.GetGroundHit(out wheelHits[0]);
         colliders.frontLeftCollider.GetGroundHit(out wheelHits[1]);
-
         colliders.rearRightCollider.GetGroundHit(out wheelHits[2]);
         colliders.rearLeftCollider.GetGroundHit(out wheelHits[3]);
 
@@ -130,18 +147,16 @@ public class CarController : MonoBehaviour
         {
             wheelParticles.rearLeftCollider.Stop();
         }
-
-
     }
+
     private void ApplyBrake()
     {
         colliders.frontRightCollider.brakeTorque = brakeInput * -brakePower * 0.7f;
         colliders.frontLeftCollider.brakeTorque = brakeInput * -brakePower * 0.7f;
-
         colliders.rearRightCollider.brakeTorque = brakeInput * -brakePower * 0.3f;
         colliders.rearLeftCollider.brakeTorque = brakeInput * -brakePower * 0.3f;
-
     }
+
     private void ApplyWheelPositions()
     {
         UpdateWheel(colliders.frontLeftCollider, meshes.frontLeftCollider);
@@ -149,24 +164,26 @@ public class CarController : MonoBehaviour
         UpdateWheel(colliders.rearLeftCollider, meshes.rearLeftCollider);
         UpdateWheel(colliders.rearRightCollider, meshes.rearRightCollider);
     }
+
     private void UpdateWheel(WheelCollider coll, MeshRenderer wheelMesh)
     {
         Quaternion quat;
         Vector3 position;
         coll.GetWorldPose(out position, out quat);
-        wheelMesh.transform.position = position; 
+        wheelMesh.transform.position = position;
         wheelMesh.transform.rotation = quat;
     }
 }
 
 [Serializable]
-public class WheelColliders 
+public class WheelColliders
 {
     public WheelCollider frontLeftCollider;
     public WheelCollider frontRightCollider;
     public WheelCollider rearLeftCollider;
     public WheelCollider rearRightCollider;
 }
+
 [Serializable]
 public class WheelMesh
 {
@@ -183,5 +200,4 @@ public class WheelParticles
     public ParticleSystem frontLeftCollider;
     public ParticleSystem rearRightCollider;
     public ParticleSystem rearLeftCollider;
-
 }
