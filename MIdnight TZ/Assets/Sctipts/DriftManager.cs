@@ -6,19 +6,10 @@ using System.Threading.Tasks;
 
 public class DriftManager : MonoBehaviour
 {
-    public Rigidbody playerRB;
     public TMP_Text totalScoreText;
     public TMP_Text currentScoreText;
     public TMP_Text factorText;
     public TMP_Text driftAngleText;
-
-    private float speed = 0;
-    private float driftAngle = 0;
-    private float driftFactor = 1;
-    private float currentScore;
-    private float totalScore;
-
-    private bool isDrifting = false;
 
     public float minimumSpeed = 5;
     public float minimumAngle = 10;
@@ -28,11 +19,30 @@ public class DriftManager : MonoBehaviour
     public Color nearStopColor;
     public Color driftEndedColor;
 
+    private Rigidbody playerRB;
+    private float speed = 0;
+    private float driftAngle = 0;
+    private float driftFactor = 1;
+    private float currentScore;
+    private float totalScore;
+    private bool isDrifting = false;
     private IEnumerator stopDriftingCoroutine = null;
 
     void Start()
     {
         driftingObject.SetActive(false);
+        // Находим объект с тегом "Car" и получаем его компонент Rigidbody
+        GameObject car = GameObject.FindGameObjectWithTag("Car");
+        if (car != null)
+        {
+            playerRB = car.GetComponent<Rigidbody>();
+            if (playerRB == null)
+                Debug.LogError("Rigidbody component not found on the car object!");
+        }
+        else
+        {
+            Debug.LogError("Car object not found in the scene!");
+        }
     }
 
     void Update()
@@ -53,7 +63,7 @@ public class DriftManager : MonoBehaviour
         {
             if (!isDrifting || stopDriftingCoroutine != null)
             {
-                StartDrift(); 
+                StartDrift();
             }
         }
         else
