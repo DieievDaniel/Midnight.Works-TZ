@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class PartsManager : MonoBehaviour
 {
-
     public PartType[] partTypes;
-
 
     public void Start()
     {

@@ -8,7 +8,7 @@ public class MoneyManager : MonoBehaviour
     private DriftManager driftManager;
 
     // Статическое поле для хранения значения кэша
-    private static int cashAmount = 0;
+    public static int cashAmount = 0;
     public static int winCashAmount = 0;
 
     void Start()
@@ -24,7 +24,7 @@ public class MoneyManager : MonoBehaviour
         UpdateCashText();
     }
 
-    private void UpdateCashText()
+    public void UpdateCashText()
     {
         cashText.text = "Cash: " + cashAmount.ToString(); // Обновляем текстовое поле с кэшем
     }

@@ -88,4 +88,35 @@ public class SceneLoad : MonoBehaviour
             Physics.gravity = new Vector3(0, -9.81f, 0);
         }
     }
+    public void BackToMenu()
+    {
+        GameObject evoXObject = GameObject.Find("EvoX");
+
+        // Если объект найден, уничтожить его
+        if (evoXObject != null)
+        {
+            Destroy(evoXObject);
+        }
+        else
+        {
+            Debug.LogWarning("Object named 'EvoX' not found.");
+        }
+        SceneManager.LoadScene("Garage Scene");
+    }
+    public void JoinSoloGame(string carObjectName)
+    {
+        GameObject carObject = GameObject.Find("EvoX");
+
+        if (carObject != null)
+        {
+            // Сохраняем позицию машины
+            carPosition = carObject.transform.position;
+
+            // Сохраняем машину, чтобы она не уничтожалась при загрузке следующей сцены
+            DontDestroyOnLoad(carObject);
+
+            // Загружаем следующую сцену
+            SceneManager.LoadScene("GameScene");
+        }
+    }
 }
