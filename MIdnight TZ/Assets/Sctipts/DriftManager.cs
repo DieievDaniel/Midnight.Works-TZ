@@ -24,7 +24,7 @@ public class DriftManager : MonoBehaviour
     private float driftAngle = 0;
     private float driftFactor = 1;
     private float currentScore;
-    private float totalScore;
+    public float totalScore;
     private bool isDrifting = false;
     private IEnumerator stopDriftingCoroutine = null;
 

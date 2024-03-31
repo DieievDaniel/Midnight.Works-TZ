@@ -146,7 +146,6 @@ GameObject:
   - component: {fileID: 1321958318115154336}
   - component: {fileID: 149276242539455862}
   - component: {fileID: 8585553473622182216}
-  - component: {fileID: 1301871234216516037}
   m_Layer: 5
   m_Name: Player List
   m_TagString: Untagged
@@ -257,20 +256,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1301871234216516037
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8231077021776516193}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff28d32fc868d4347a0e47d8301b92af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  textName: {fileID: 0}
-  textPlayerCounts: {fileID: 0}
 --- !u!1 &8354869026463235456
 GameObject:
   m_ObjectHideFlags: 0

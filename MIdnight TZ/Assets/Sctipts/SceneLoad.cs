@@ -4,16 +4,17 @@ using UnityEngine.SceneManagement;
 public class SceneLoad : MonoBehaviour
 {
     public string nextSceneName;
-    private Vector3 carPosition;
+    public Vector3 carPosition;
+    public GameObject carObject;
 
     public void LoadNextSceneWithCar(string carObjectName)
     {
         // Найдем машину по имени
-        GameObject carObject = GameObject.Find("EvoX");
+         carObject = GameObject.Find("EvoX");
 
         if (carObject != null)
         {
-            // Сохраняем позицию машины
+            
             carPosition = carObject.transform.position;
 
             // Отключаем гравитацию

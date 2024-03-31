@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
+using System;
 
 public class FhotonPlayerList : MonoBehaviour
 {
@@ -15,5 +16,10 @@ public class FhotonPlayerList : MonoBehaviour
     {
         textName.text = info.Name;
         textPlayerCounts.text = info.PlayerCount + "/" + info.MaxPlayers;
+    }
+
+    internal void SetInfo(string nickName)
+    {
+        throw new NotImplementedException();
     }
 }
