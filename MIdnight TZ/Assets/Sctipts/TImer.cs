@@ -18,13 +18,11 @@ public class Timer : MonoBehaviour
 
     void Start()
     {
-        // Начать обратный отсчет перед началом игры
         StartCoroutine(StartCountdown());
     }
 
     void Update()
     {
-        // Проверяем, началась ли игра и не закончился ли обратный отсчет
         if (gameStarted && timeLeft > 0)
         {
             timeLeft -= Time.deltaTime;
@@ -33,44 +31,37 @@ public class Timer : MonoBehaviour
             if (timeLeft <= 0)
             {
                 gameStarted = false;
-                EndGame(); // Завершаем игру
+                EndGame(); 
             }
         }
     }
 
-    // Обратный отсчет перед началом игры
     private System.Collections.IEnumerator StartCountdown()
     {
         countdownText.gameObject.SetActive(true);
         int count = 3;
 
-        // Отключаем управление игроком
         isCountingDown = true;
         carController.enabled = false;
 
-        // Замораживаем время
         Time.timeScale = 0;
 
         while (count > 0)
         {
             countdownText.text = count.ToString();
-            yield return new WaitForSecondsRealtime(1f); // Используем WaitForSecondsRealtime для обхода замороженного времени
+            yield return new WaitForSecondsRealtime(1f); 
             count--;
         }
         countdownText.gameObject.SetActive(false);
 
-        // Включаем управление игроком после обратного отсчета
         isCountingDown = false;
         carController.enabled = true;
 
-        // Восстанавливаем нормальное время
         Time.timeScale = 1;
 
-        // Начать игру после обратного отсчета
         StartGame();
     }
 
-    // Начать игру и запустить таймер
     private void StartGame()
     {
         gameStarted = true;
@@ -78,18 +69,14 @@ public class Timer : MonoBehaviour
         UpdateTimerText();
     }
 
-    // Завершить игру
     private void EndGame()
     {
         moneyManager.winCash.gameObject.SetActive(true);
-        moneyManager.GetMoneyByDrifting(); // Получаем кэш после завершения игры
-        moneyManager.winCash.text = MoneyManager.winCashAmount.ToString(); // Устанавливаем текст кэша после получения кэша
+        moneyManager.GetMoneyByDrifting(); 
+        moneyManager.winCash.text = "You win: " + MoneyManager.winCashAmount.ToString(); 
         timerText.gameObject.SetActive(false);
-        // Остановить игру или выполнить другие действия по вашему выбору
-        Time.timeScale = 0; // Остановить время
+        Time.timeScale = 0; 
     }
-
-    // Обновить текст таймера
     private void UpdateTimerText()
     {
         int minutes = Mathf.FloorToInt(timeLeft / 60);

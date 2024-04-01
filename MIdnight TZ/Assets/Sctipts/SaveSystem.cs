@@ -32,7 +32,6 @@ public class SaveSystem : MonoBehaviour
         int totalCash = MoneyManager.cashAmount;
         bool addedCashAfterLastGame = MoneyManager.winCashAmount > 0;
 
-        // Если текущая сумма кэша больше 0, сохраняем ее
         if (totalCash > 0)
         {
             BinaryFormatter binaryFormatter = new BinaryFormatter();
@@ -52,7 +51,6 @@ public class SaveSystem : MonoBehaviour
             SaveData saveData = (SaveData)binaryFormatter.Deserialize(fileStream);
             fileStream.Close();
 
-            // Загружаем данные только если сумма кэша больше 0
             if (saveData.totalCashAmount > 0)
             {
                 MoneyManager.cashAmount = saveData.totalCashAmount;
