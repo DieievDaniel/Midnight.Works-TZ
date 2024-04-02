@@ -31,7 +31,7 @@ public class DriftManager : MonoBehaviour
     void Start()
     {
         driftingObject.SetActive(false);
-        // Находим объект с тегом "Car" и получаем его компонент Rigidbody
+    
         GameObject car = GameObject.FindGameObjectWithTag("Car");
         if (car != null)
         {

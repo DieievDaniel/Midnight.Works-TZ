@@ -20,7 +20,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
-        // Вызываем метод JoinLobby() при успешном подключении к мастер-серверу
         PhotonNetwork.JoinLobby();
     }
 
@@ -51,7 +50,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public override void OnCreatedRoom()
     {
         Debug.Log("Создана комната " + PhotonNetwork.CurrentRoom.Name);
-        // Переход к третьей сцене после создания комнаты
         sceneLoad.LoadNextSceneWithCar("EvoX");
     }
 
@@ -63,25 +61,20 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("Присоединились к комнате " + PhotonNetwork.CurrentRoom.Name);
-        // Переход к третьей сцене после присоединения к комнате
         sceneLoad.LoadNextSceneWithCar("EvoX");
     }
 
    
 
-    // Вызывается при выходе из приложения
     private void OnApplicationQuit()
     {
-        // Проверяем, подключены ли мы к Photon серверу
         if (PhotonNetwork.IsConnected)
         {
-            // Покидаем текущую комнату перед отключением
             if (PhotonNetwork.InRoom)
             {
                 PhotonNetwork.LeaveRoom();
             }
 
-            // Отключаемся от Photon сервера
             PhotonNetwork.Disconnect();
         }
     }

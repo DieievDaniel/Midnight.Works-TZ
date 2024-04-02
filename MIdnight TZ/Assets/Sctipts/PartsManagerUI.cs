@@ -6,7 +6,6 @@ using TMPro;
 
 public class PartsManagerUI : MonoBehaviour
 {
-
     public CanvasGroup GearsCanvas;
     public CanvasGroup SelectItemCanvas;
     private PartsManager partsManager;
@@ -18,17 +17,11 @@ public class PartsManagerUI : MonoBehaviour
     private PartType selectPart;
 
 
-    // Start is called before the first frame update
     void Start()
     {
         partsManager = FindObjectOfType<PartsManager>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     public void GoToSelectMenu(string partName)
     {
@@ -58,6 +51,9 @@ public class PartsManagerUI : MonoBehaviour
             {
                 selectText.text = "Select";
             }
+
+            GearsCanvas.gameObject.SetActive(false);
+            SelectItemCanvas.gameObject.SetActive(true);
         }
     }
 
@@ -65,6 +61,8 @@ public class PartsManagerUI : MonoBehaviour
     {
         currentSelected = tempSelected;
         selectText.text = "Selected";
+        GearsCanvas.gameObject.SetActive(false);
+        SelectItemCanvas.gameObject.SetActive(true);
     }
 
 
@@ -80,13 +78,14 @@ public class PartsManagerUI : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
     }
+
     public void GoBack()
     {
-
         partsManager.SetPartFromId(selectPart, currentSelected);
         StartCoroutine(FadeBetween(GearsCanvas, SelectItemCanvas));
         FindObjectOfType<GarageCamera>().state = CameraState.Orbiting;
 
-
+        GearsCanvas.gameObject.SetActive(true);
+        SelectItemCanvas.gameObject.SetActive(false);
     }
 }

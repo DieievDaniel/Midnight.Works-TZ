@@ -7,14 +7,14 @@ public class Timer : MonoBehaviour
     [SerializeField] private TextMeshProUGUI timerText;
 
     [SerializeField] private MoneyManager moneyManager;
-    [SerializeField] private CarController carController; // Ссылка на скрипт управления игроком
+    [SerializeField] private CarController carController; 
 
-    private float countdownDuration = 3f; // Длительность обратного отсчета
-    public float gameDuration; // Длительность игры в секундах
-    private float timeLeft; // Оставшееся время игры
+    private float countdownDuration = 3f; 
+    public float gameDuration; 
+    private float timeLeft; 
 
-    private bool gameStarted = false; // Флаг, указывающий, началась ли игра
-    private bool isCountingDown = true; // Флаг, указывающий, идет ли обратный отсчет
+    private bool gameStarted = false; 
+    private bool isCountingDown = true; 
 
     void Start()
     {

@@ -6,7 +6,6 @@ using Photon.Pun;
 public class IsMine : MonoBehaviour
 {
     [SerializeField] private CarController carController;
-    // [SerializeField] private GameObject camera;
     [SerializeField] private PhotonView photonView;
     void Start()
     {
